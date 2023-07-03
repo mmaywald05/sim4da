@@ -9,3 +9,4 @@ build/
 .gradle/
 
 .DS_Store
+/java_pid24524.hprof

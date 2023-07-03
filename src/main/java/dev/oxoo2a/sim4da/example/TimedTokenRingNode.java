@@ -20,8 +20,8 @@ public class TimedTokenRingNode extends TimedNode {
 
         if(myId == 0){
             m.add("counter", 0);
-            sendUnicast(1, m);
             m.add("%T"+myId, 0);
+            sendUnicast(1, m);
             System.out.println("sending Message");
         }
         while (true){
