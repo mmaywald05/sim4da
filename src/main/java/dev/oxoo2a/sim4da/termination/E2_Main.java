@@ -1,4 +1,4 @@
-package dev.oxoo2a.sim4da.example;
+package dev.oxoo2a.sim4da.termination;
 
 import dev.oxoo2a.sim4da.Node;
 import dev.oxoo2a.sim4da.Simulator;
@@ -7,7 +7,7 @@ public class E2_Main {
 
 
     public static final int NUM_OF_ACTORS = 10;
-    public static final double PROBABILITY = 0.95f;
+    public static final double PROBABILITY = 0.8f;
 
 
     public static void main(String[] args) {
@@ -22,14 +22,10 @@ public class E2_Main {
         }
 
         try{
-            s.runSimulation(1);
+            s.runSimulation(100);
         }catch (InstantiationException e){
             e.printStackTrace();
             System.err.println("Instantiation failed. Time to investigate.");
         }
-
-
-
-
     }
 }
