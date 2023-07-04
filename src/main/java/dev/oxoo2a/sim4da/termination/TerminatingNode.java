@@ -32,6 +32,7 @@ public class TerminatingNode extends Node {
         while (true){
 
             if(active ){
+
                 int id = myId;
                 double r = rand.nextDouble();
                 if(r < E2_Main.PROBABILITY) {
@@ -41,15 +42,12 @@ public class TerminatingNode extends Node {
                     int receiverId = generateRandomNumber(E2_Main.NUM_OF_ACTORS, myId);
 
                     sendUnicast(receiverId, m);
-
                 }else{
-                    System.err.println("NODE " +myId  +  ": NOPE");
                     continue;
                 }
                 System.out.println("Node "+ myId+": turned INACTIVE");
-                active= false;
-            }else{
-                System.err.println("Node " + myId + " is not doing anything because INACTIVE");
+                active = false;
+
             }
 
             Network.Message m_raw = receive();
@@ -60,8 +58,6 @@ public class TerminatingNode extends Node {
                     active = true;
                 }
 
-            }else{
-                System.err.println("THIS JUST HAPPENED");
             }
         }
 /*
