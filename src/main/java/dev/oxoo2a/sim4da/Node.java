@@ -1,10 +1,14 @@
 package dev.oxoo2a.sim4da;
 
+
+
 public abstract class Node implements Simulator2Node {
 
     public Node ( int my_id ) {
         this.myId = my_id;
+
         t_main = new Thread(this::main);
+
     }
 
     @Override

@@ -5,54 +5,63 @@ import dev.oxoo2a.sim4da.Network;
 import dev.oxoo2a.sim4da.Node;
 import dev.oxoo2a.sim4da.termination.E2_Main;
 
+import java.nio.file.ClosedFileSystemException;
+import java.util.Objects;
 import java.util.Random;
 
 public class TerminatingNode extends Node {
 
     private boolean active = false;
     Random rand = new Random();
-    private int counter = 0;
+    int decrease = 0;
+
     public TerminatingNode(int my_id) {
         super(my_id);
     }
 
+
     @Override
     protected void main() {
+        String fileName = "NodeLog_" + myId;
 
         Message m = new Message();
 
-        m.add("counter", 0);
-            sendUnicast(generateRandomNumber(E2_Main.NUM_OF_ACTORS, myId), m);
+        m.add("activation", 1);
+        sendUnicast(generateRandomNumber(E2_Main.NUM_OF_ACTORS, myId), m);
 
         while (true){
-            ++counter;
-            System.out.println("Node " + myId +  " Loop Count: " + counter);
 
-
-
-            if(active){
+            if(active ){
+                int id = myId;
                 double r = rand.nextDouble();
                 if(r < E2_Main.PROBABILITY) {
 
                     m = new Message();
-                    m.add("test", "test");
+                    m.add("activation", 1);
                     int receiverId = generateRandomNumber(E2_Main.NUM_OF_ACTORS, myId);
+
                     sendUnicast(receiverId, m);
-                    System.out.println("Node " + myId+ " sending Message to " + receiverId);
+
                 }else{
-                    System.err.println("Node " + myId+ " missed the Chance");
+                    System.err.println("NODE " +myId  +  ": NOPE");
+                    continue;
                 }
+                System.out.println("Node "+ myId+": turned INACTIVE");
                 active= false;
-                System.out.println("Node " + myId+ " turned INACTIVE");
+            }else{
+                System.err.println("Node " + myId + " is not doing anything because INACTIVE");
             }
 
             Network.Message m_raw = receive();
-            if(m_raw == null) {
-                System.out.println("node " + myId+ " dies.");
+            if(m_raw != null) {
+                m = Message.fromJson(m_raw.payload);
+                if(Objects.equals(m.query("activation"), "1")){
+                    System.out.println("Node " + myId+ ": TURNED ACTIVE");
+                    active = true;
+                }
 
             }else{
-                System.out.println("Node "+ myId+ ": ACTIVE");
-                active = true;
+                System.err.println("THIS JUST HAPPENED");
             }
         }
 /*
